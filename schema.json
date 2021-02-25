@@ -1,0 +1,57 @@
+{
+    "name": "xyz",
+    "resources": {
+        "xyz:index:StaticPage": {
+            "isComponent": true,
+            "inputProperties": {
+                "indexContent": {
+                    "type": "string",
+                    "description": "The HTML content for index.html."
+                }
+            },
+            "requiredInputs": [
+                "indexContent"
+            ],
+            "properties": {
+                "bucket": {
+                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
+                    "description": "The bucket resource."
+                },
+                "websiteUrl": {
+                    "type": "string",
+                    "description": "The website URL."
+                }
+            },
+            "required": [
+                "bucket",
+                "websiteUrl"
+            ]
+        }
+    },
+    "language": {
+        "csharp": {
+            "packageReferences": {
+                "Pulumi": "2.*",
+                "Pulumi.Aws": "3.*"
+            }
+        },
+        "go": {
+            "generateResourceContainerTypes": true,
+            "importBasePath": "github.com/pulumi/pulumi-xyz/sdk/go/xyz"
+        },
+        "nodejs": {
+            "dependencies": {
+                "@pulumi/aws": "^3.30.0"
+            },
+            "devDependencies": {
+                "typescript": "^3.7.0"
+            }
+        },
+        "python": {
+            "requires": {
+                "pulumi": ">=2.21.2,<3.0.0",
+                "pulumi-aws": ">=3.30.0,<4.0.0"
+            }
+        }
+    }
+}
