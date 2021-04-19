@@ -14,7 +14,7 @@
             ],
             "properties": {
                 "bucket": {
-                    "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
+                    "$ref": "/aws/v4.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
                     "description": "The bucket resource."
                 },
                 "websiteUrl": {
@@ -31,8 +31,8 @@
     "language": {
         "csharp": {
             "packageReferences": {
-                "Pulumi": "2.*",
-                "Pulumi.Aws": "3.*"
+                "Pulumi": "3.*",
+                "Pulumi.Aws": "4.*"
             }
         },
         "go": {
@@ -41,7 +41,7 @@
         },
         "nodejs": {
             "dependencies": {
-                "@pulumi/aws": "^3.30.0"
+                "@pulumi/aws": "^4.0.0"
             },
             "devDependencies": {
                 "typescript": "^3.7.0"
@@ -49,8 +49,8 @@
         },
         "python": {
             "requires": {
-                "pulumi": ">=2.21.2,<3.0.0",
-                "pulumi-aws": ">=3.30.0,<4.0.0"
+                "pulumi": ">=3.0.0,<4.0.0",
+                "pulumi-aws": ">=4.0.0,<5.0.0"
             }
         }
     }

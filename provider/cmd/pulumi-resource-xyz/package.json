@@ -1,8 +1,8 @@
 {
     "version": "${VERSION}",
     "dependencies": {
-        "@pulumi/pulumi": "^2.21.2",
-        "@pulumi/aws": "^3.30.0"
+        "@pulumi/pulumi": "^3.0.0",
+        "@pulumi/aws": "^4.0.0"
     },
     "devDependencies": {
         "@types/node": "^10.0.0",

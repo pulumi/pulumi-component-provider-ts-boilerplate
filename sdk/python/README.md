@@ -1,34 +1,39 @@
-# xyz Pulumi Component Provider (Go)
+# xyz Pulumi Component Provider (TypeScript)
 
-This repo is a boilerplate showing how to create a Pulumi component provider written in Go. You can search-replace `xyz` with the name of your desired provider as a starting point for creating a component provider for your component resources.
+This repo is a boilerplate showing how to create a Pulumi component provider written in TypeScript. You can search-replace `xyz` with the name of your desired provider as a starting point for creating a component provider for your component resources.
 
-An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/pkg/provider/staticPage.go`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in Go.
+An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-xyz/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in TypeScript.
 
-The component provider makes component resources available to other languages. The implementation is in `provider/pkg/provider/provider.go`. Each component resource in the provider must have an implementation in the `Construct` function to create an instance of the requested component resource and return its `URN` and state (outputs). There is an initial implementation that demonstrates an implementation of `Construct` for the example `StaticPage` component.
+The component provider makes component resources available to other languages. The implementation is in `provider/cmd/pulumi-resource-xyz/provider.ts`. Each component resource in the provider must have an implementation in the `construct` method to create an instance of the requested component resource and return its `URN` and state (outputs). There is an initial implementation that demonstrates an implementation of `construct` for the example `StaticPage` component.
 
 A code generator is available which generates SDKs in TypeScript, Python, Go and .NET which are also checked in to the `sdk` folder. The SDKs are generated from a schema in `schema.json`. This file should be kept aligned with the component resources supported by the component provider implementation.
 
 An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
 
-Note that the generated provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. If creating a provider for distribution to other users, you should ensure they install this plugin to their `PATH`.
+Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a simple bash script which invokes `node` to run the provider (there is also a `pulumi-resource-xyz.cmd` script that Pulumi will use on Windows). After running `make install`, `pulumi-resource-xyz` (and `pulumi-resource-xyz.cmd`) will be available in the `./bin` directory along with the JavaScript files and dependencies needed by the provider. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
+
+If creating a provider for distribution to other users, they will need `pulumi-resource-xyz` directory on their `PATH`. See the Packaging section below for more on distributing the provider to users.
 
 ## Prerequisites
 
-- Go 1.15
 - Pulumi CLI
-- Node.js (to build the Node.js SDK)
-- Yarn (to build the Node.js SDK)
+- Node.js
+- Yarn
+- Go 1.15 (to regenerate the SDKs)
 - Python 3.6+ (to build the Python SDK)
 - .NET Core SDK (to build the .NET SDK)
 
 ## Build and Test
 
 ```bash
-# Build and install the provider (plugin copied to $GOPATH/bin)
+# Build and install the provider
 make install_provider
 
 # Regenerate SDKs
 make generate
+
+# Ensure the pulumi-provider-xyz script is on PATH
+$ export PATH=$PATH:$PWD/bin
 
 # Test Node.js SDK
 $ make install_nodejs_sdk
@@ -42,9 +47,17 @@ $ pulumi up
 
 ## Naming
 
-The `xyz` provider's plugin binary must be named `pulumi-resource-xyz` (in the format `pulumi-resource-<provider>`).
+The `xyz` provider's plugin must be named `pulumi-resource-xyz` (in the format `pulumi-resource-<provider>`).
 
 While the provider plugin must follow this naming convention, the SDK package naming can be customized. TODO explain.
+
+## Packaging
+
+The provider plugin can be packaged into a tarball and hosted at a custom server URL to make it easier to distribute to users.
+
+Currently three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same set of files: the content of the `./bin` directory after running `make install_provider`, excluding the `node_modules` directory. The `node_modules` directory isn't necessary to be included in the tarballs because the `PulumiPlugin.yaml` file indicates to Pulumi that this is a `nodejs` plugin that needs its `npm` dependencies installed as part of installing the plugin.
+
+TODO add make target to generate tarballs and explain custom server hosting in more detail.
 
 ## Example component
 
@@ -85,7 +98,7 @@ The example `StaticPage` component resource is defined in `schema.json`:
 }
 ```
 
-The component resource's type token is `xyz:index:StaticPage` in the format of `<package>:<module>:<type>`. In this case, it's in the `xyz` package and `index` module. This is the same type token passed to `RegisterComponentResource` inside the implementation of `NewStaticPage` in `provider/pkg/provider/staticPage.go`, and also the same token referenced in `Construct` in `provider/pkg/provider/provider.go`.
+The component resource's type token is `xyz:index:StaticPage` in the format of `<package>:<module>:<type>`. In this case, it's in the `xyz` package and `index` module. This is the same type token passed inside the implementation of `StaticPage` in `provider/cmd/pulumi-resource-xyz/staticPage.ts`, and also the same token referenced in `construct` in `provider/cmd/pulumi-resource-xyz/provider.ts`.
 
 This component has a required `indexContent` input property typed as `string`, and two required output properties: `bucket` and `websiteUrl`. Note that `bucket` is typed as the `aws:s3/bucket:Bucket` resource from the `aws` provider (in the schema the `/` is escaped as `%2F`).
 
@@ -120,55 +133,42 @@ For the Go SDK, dependencies are specified in the `sdk/go.mod` file.
 
 ### Implementation
 
-The implementation of this component is in `provider/pkg/provider/staticPage.go` and the structure of the component's inputs and outputs aligns with what is defined in `schema.json`:
+The implementation of this component is in `provider/cmd/pulumi-resource-xyz/staticPage.ts` and the structure of the component's inputs and outputs aligns with what is defined in `schema.json`:
 
-```go
-// The set of arguments for creating a StaticPage component resource.
-type StaticPageArgs struct {
-	IndexContent pulumi.StringInput `pulumi:"indexContent"`
+```typescript
+export interface StaticPageArgs {
+    indexContent: pulumi.Input<string>;
 }
 
-// The StaticPage component resource.
-type StaticPage struct {
-	pulumi.ResourceState
+export class StaticPage extends pulumi.ComponentResource {
+    public readonly bucket: aws.s3.Bucket;
+    public readonly websiteUrl: pulumi.Output<string>;
 
-	Bucket     *s3.Bucket          `pulumi:"bucket"`
-	WebsiteUrl pulumi.StringOutput `pulumi:"websiteUrl"`
-}
+    constructor(name: string, args: StaticPageArgs, opts?: pulumi.ComponentResourceOptions) {
+        super("xyz:index:StaticPage", name, args, opts);
 
-// NewStaticPage creates a new StaticPage component resource.
-func NewStaticPage(ctx *pulumi.Context, name string, args *StaticPageArgs, opts ...pulumi.ResourceOption) (*StaticPage, error) {
-    ...
+        ...
+    }
 }
 ```
 
-The provider makes this component resource available in the `Construct` function in `provider/pkg/provider/provider.go`. When `Construct` is called and the `typ` argument is `xyz:index:StaticPage`, we create an instance of the `StaticPage` component resource and return its `URN` and outputs as its state.
+The provider makes this component resource available in the `construct` method in `provider/cmd/pulumi-resource-xyz/provider.ts`. When `construct` is called and the `type` argument is `xyz:index:StaticPage`, we create an instance of the `StaticPage` component resource and return its `URN` and outputs as its state.
 
 
-```go
-func constructStaticPage(ctx *pulumi.Context, name string, inputs *pulumi.ConstructInputs,
-	options pulumi.ResourceOption) (pulumi.ConstructResult, error) {
+```typescript
+async function constructStaticPage(name: string, inputs: pulumi.Inputs,
+    options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
 
-	// Copy the raw inputs to StaticPageArgs. `inputs.SetArgs` uses the types and `pulumi:` tags
-	// on the struct's fields to convert the raw values to the appropriate Input types.
-	args := &StaticPageArgs{}
-	if err := inputs.SetArgs(args); err != nil {
-		return pulumi.ConstructResult{}, errors.Wrap(err, "setting args")
-	}
+    // Create the component resource.
+    const staticPage = new StaticPage(name, inputs as StaticPageArgs, options);
 
-	// Create the component resource.
-	staticPage, err := NewStaticPage(ctx, name, args, options)
-	if err != nil {
-		return pulumi.ConstructResult{}, errors.Wrap(err, "creating component")
-	}
-
-	// Return the component resource's URN and outputs as its state.
-	return pulumi.ConstructResult{
-		URN: staticPage.URN(),
-		State: pulumi.Map{
-			"bucket":     staticPage.Bucket,
-			"websiteUrl": staticPage.WebsiteUrl,
-		},
-	}, nil
+    // Return the component resource's URN and outputs as its state.
+    return {
+        urn: staticPage.urn,
+        state: {
+            bucket: staticPage.bucket,
+            websiteUrl: staticPage.websiteUrl,
+        },
+    };
 }
 ```

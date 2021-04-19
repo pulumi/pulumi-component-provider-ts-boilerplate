@@ -5,33 +5,73 @@
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Mapping, Optional, Sequence, Union
-from . import _utilities, _tables
+from typing import Any, Mapping, Optional, Sequence, Union, overload
+from . import _utilities
 import pulumi_aws
 
-__all__ = ['StaticPage']
+__all__ = ['StaticPageArgs', 'StaticPage']
+
+@pulumi.input_type
+class StaticPageArgs:
+    def __init__(__self__, *,
+                 index_content: pulumi.Input[str]):
+        """
+        The set of arguments for constructing a StaticPage resource.
+        :param pulumi.Input[str] index_content: The HTML content for index.html.
+        """
+        pulumi.set(__self__, "index_content", index_content)
+
+    @property
+    @pulumi.getter(name="indexContent")
+    def index_content(self) -> pulumi.Input[str]:
+        """
+        The HTML content for index.html.
+        """
+        return pulumi.get(self, "index_content")
+
+    @index_content.setter
+    def index_content(self, value: pulumi.Input[str]):
+        pulumi.set(self, "index_content", value)
 
 
 class StaticPage(pulumi.ComponentResource):
+    @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  index_content: Optional[pulumi.Input[str]] = None,
-                 __props__=None,
-                 __name__=None,
-                 __opts__=None):
+                 __props__=None):
         """
         Create a StaticPage resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] index_content: The HTML content for index.html.
         """
-        if __name__ is not None:
-            warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
-            resource_name = __name__
-        if __opts__ is not None:
-            warnings.warn("explicit use of __opts__ is deprecated, use 'opts' instead", DeprecationWarning)
-            opts = __opts__
+        ...
+    @overload
+    def __init__(__self__,
+                 resource_name: str,
+                 args: StaticPageArgs,
+                 opts: Optional[pulumi.ResourceOptions] = None):
+        """
+        Create a StaticPage resource with the given unique name, props, and options.
+        :param str resource_name: The name of the resource.
+        :param StaticPageArgs args: The arguments to use to populate this resource's properties.
+        :param pulumi.ResourceOptions opts: Options for the resource.
+        """
+        ...
+    def __init__(__self__, resource_name: str, *args, **kwargs):
+        resource_args, opts = _utilities.get_resource_args_opts(StaticPageArgs, pulumi.ResourceOptions, *args, **kwargs)
+        if resource_args is not None:
+            __self__._internal_init(resource_name, opts, **resource_args.__dict__)
+        else:
+            __self__._internal_init(resource_name, *args, **kwargs)
+
+    def _internal_init(__self__,
+                 resource_name: str,
+                 opts: Optional[pulumi.ResourceOptions] = None,
+                 index_content: Optional[pulumi.Input[str]] = None,
+                 __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -43,13 +83,13 @@ class StaticPage(pulumi.ComponentResource):
         else:
             if __props__ is not None:
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
-            __props__ = dict()
+            __props__ = StaticPageArgs.__new__(StaticPageArgs)
 
             if index_content is None and not opts.urn:
                 raise TypeError("Missing required property 'index_content'")
-            __props__['index_content'] = index_content
-            __props__['bucket'] = None
-            __props__['website_url'] = None
+            __props__.__dict__["index_content"] = index_content
+            __props__.__dict__["bucket"] = None
+            __props__.__dict__["website_url"] = None
         super(StaticPage, __self__).__init__(
             'xyz:index:StaticPage',
             resource_name,
@@ -72,10 +112,4 @@ class StaticPage(pulumi.ComponentResource):
         The website URL.
         """
         return pulumi.get(self, "website_url")
-
-    def translate_output_property(self, prop):
-        return _tables.CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
-
-    def translate_input_property(self, prop):
-        return _tables.SNAKE_TO_CAMEL_CASE_TABLE.get(prop) or prop
 
