@@ -22,11 +22,11 @@ import (
 	"path/filepath"
 
 	"github.com/pkg/errors"
-	dotnetgen "github.com/pulumi/pulumi/pkg/v2/codegen/dotnet"
-	gogen "github.com/pulumi/pulumi/pkg/v2/codegen/go"
-	nodejsgen "github.com/pulumi/pulumi/pkg/v2/codegen/nodejs"
-	pygen "github.com/pulumi/pulumi/pkg/v2/codegen/python"
-	"github.com/pulumi/pulumi/pkg/v2/codegen/schema"
+	dotnetgen "github.com/pulumi/pulumi/pkg/v3/codegen/dotnet"
+	gogen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
+	nodejsgen "github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
+	pygen "github.com/pulumi/pulumi/pkg/v3/codegen/python"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 )
 
 func main() {
