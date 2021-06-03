@@ -10,7 +10,9 @@ A code generator is available which generates SDKs in TypeScript, Python, Go and
 
 An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
 
-Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a simple bash script which invokes `node` to run the provider (there is also a `pulumi-resource-xyz.cmd` script that Pulumi will use on Windows). After running `make install`, `pulumi-resource-xyz` (and `pulumi-resource-xyz.cmd`) will be available in the `./bin` directory along with the JavaScript files and dependencies needed by the provider. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
+Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a platform-specific binary that includes its Node.js dependency along with the provider code, created using [nexe](https://github.com/nexe/nexe). By default, running `make install` will create the binary specific to your host environment, but you can override the binary target by passing in `make install target=<targe-string>` where `target-string` is a [valid nexe target](https://github.com/nexe/nexe#target-string--object).
+
+After running `make install`, `pulumi-resource-xyz` will be available in the `./bin` directory. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
 
 If creating a provider for distribution to other users, they will need `pulumi-resource-xyz` directory on their `PATH`. See the Packaging section below for more on distributing the provider to users.
 
@@ -55,9 +57,9 @@ While the provider plugin must follow this naming convention, the SDK package na
 
 The provider plugin can be packaged into a tarball and hosted at a custom server URL to make it easier to distribute to users.
 
-Currently three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same set of files: the content of the `./bin` directory after running `make install_provider`, excluding the `node_modules` directory. The `node_modules` directory isn't necessary to be included in the tarballs because the `PulumiPlugin.yaml` file indicates to Pulumi that this is a `nodejs` plugin that needs its `npm` dependencies installed as part of installing the plugin.
+Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-xyz` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically in the `dist` directory using `make dist`.
 
-TODO add make target to generate tarballs and explain custom server hosting in more detail.
+TODO explain custom server hosting in more detail.
 
 ## Example component
 
