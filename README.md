@@ -57,7 +57,7 @@ While the provider plugin must follow this naming convention, the SDK package na
 
 The provider plugin can be packaged into a tarball and hosted at a custom server URL to make it easier to distribute to users.
 
-Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-xyz` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically using `make artifacts`.
+Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-xyz` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically in the `dist` directory using `make dist`.
 
 TODO explain custom server hosting in more detail.
 

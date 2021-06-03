@@ -28,26 +28,27 @@ build_provider:: ensure
 	pushd provider/cmd/${PROVIDER}/ && \
 		yarn install && \
 	popd && \
-	rm -rf dist && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o dist -m && \
-	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./dist/index.js && \
-	rm ./dist/index.js.bak && \
+	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
+	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
+	rm ./build/index.js.bak && \
 	rm -rf ./bin && mkdir bin && \
-	npx nexe dist/index.js -t $(target) -o bin/${PROVIDER}
+	npx nexe build/index.js -t $(target) -o bin/${PROVIDER}
 
 install_provider:: build_provider
 
 # builds all providers required for publishing
-artifacts:: ensure
+dist:: ensure
 	pushd provider/cmd/${PROVIDER}/ && \
 		yarn install && \
 	popd && \
-	rm -rf dist && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o dist -m && \
-	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./dist/index.js && \
-	rm ./dist/index.js.bak && \
+	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
+	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
+	rm ./build/index.js.bak && \
+	rm -rf dist  && mkdir dist && \
 	for TARGET in "darwin-amd64" "win-amd64" "linux-amd64"; do \
 		rm -rf ./bin && mkdir bin && \
-		npx nexe dist/index.js -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
-		tar -czvf "$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" bin; \
+		npx nexe build/index.js -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
+		tar -czvf "dist/$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" bin; \
 	done
 
 # Go SDK
