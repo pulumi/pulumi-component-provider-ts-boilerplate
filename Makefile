@@ -10,31 +10,45 @@ VERSION_PATH    := provider/pkg/version.Version
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.json
 
+override target := "14.15.3"
+
 generate:: gen_go_sdk gen_dotnet_sdk gen_nodejs_sdk gen_python_sdk
 
 build:: build_provider build_dotnet_sdk build_nodejs_sdk build_python_sdk
 
 install:: install_provider install_dotnet_sdk install_nodejs_sdk
 
+# Ensure all dependencies are installed
+ensure::
+	yarn install
 
 # Provider
 
-build_provider::
-	cd provider/cmd/${PROVIDER}/ && \
+build_provider:: ensure
+	pushd provider/cmd/${PROVIDER}/ && \
 		yarn install && \
-		yarn run tsc --version && \
-		yarn run tsc && \
-		cp package.json yarn.lock ${PROVIDER} ${PROVIDER}.cmd PulumiPlugin.yaml ./bin/ && \
-		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
-		rm ./bin/package.json.bak
+	popd && \
+	rm -rf dist && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o dist -m && \
+	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./dist/index.js && \
+	rm ./dist/index.js.bak && \
+	rm -rf ./bin && mkdir bin && \
+	npx nexe dist/index.js -t $(target) -o bin/${PROVIDER}
 
 install_provider:: build_provider
-	mkdir -p bin && rm -rf bin/*
-	cp -a provider/cmd/${PROVIDER}/bin/. bin/
-	cd provider/cmd/${PROVIDER}/ && cp ${PROVIDER} ${PROVIDER}.cmd PulumiPlugin.yaml ../../../bin/
-	cd bin && yarn install
-	chmod +x bin/${PROVIDER}
 
+# builds all providers required for publishing
+build_artifacts:: ensure
+	pushd provider/cmd/${PROVIDER}/ && \
+		yarn install && \
+	popd && \
+	rm -rf dist && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o dist -m && \
+	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./dist/index.js && \
+	rm ./dist/index.js.bak && \
+	for TARGET in "darwin-amd64" "win-amd64" "linux-amd64"; do \
+		rm -rf ./bin && mkdir bin && \
+		npx nexe dist/index.js -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
+		tar -czvf "$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" bin; \
+	done
 
 # Go SDK
 
