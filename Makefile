@@ -37,7 +37,7 @@ build_provider:: ensure
 install_provider:: build_provider
 
 # builds all providers required for publishing
-build_artifacts:: ensure
+artifacts:: ensure
 	pushd provider/cmd/${PROVIDER}/ && \
 		yarn install && \
 	popd && \
