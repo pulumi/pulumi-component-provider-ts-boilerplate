@@ -25,6 +25,7 @@ ensure::
 # Provider
 
 build_provider:: ensure
+	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
 	pushd provider/cmd/${PROVIDER}/ && \
 		yarn install && \
 	popd && \

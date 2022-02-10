@@ -18,7 +18,7 @@ import * as provider from "@pulumi/pulumi/provider";
 import { StaticPage, StaticPageArgs } from "./staticPage";
 
 export class Provider implements provider.Provider {
-    constructor(readonly version: string) { }
+    constructor(readonly version: string, readonly schema: string) { }
 
     async construct(name: string, type: string, inputs: pulumi.Inputs,
         options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
