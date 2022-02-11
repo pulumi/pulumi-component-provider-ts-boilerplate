@@ -16,4 +16,6 @@ nuget/
 ci-scripts/
 *.tar.gz
 
-/provider/cmd/pulumi-resource-*/schema.go
+# This is an artifact only so that we can pass the
+# schema for the provider GetSchema gRPC request
+/provider/cmd/pulumi-resource-*/schema.json
