@@ -33,7 +33,7 @@ build_provider:: ensure
 	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
 	rm ./build/index.js.bak && \
 	rm -rf ./bin && mkdir bin && \
-	npx nexe build/index.js -t $(target) -o bin/${PROVIDER}
+	npx nexe build/index.js -r build/schema.json -t $(target) -o bin/${PROVIDER}
 
 install_provider:: build_provider
 
@@ -48,7 +48,7 @@ dist:: ensure
 	rm -rf dist  && mkdir dist && \
 	for TARGET in "darwin-amd64" "win-amd64" "linux-amd64"; do \
 		rm -rf ./bin && mkdir bin && \
-		npx nexe build/index.js -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
+		npx nexe build/index.js -r build/schema.json -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
 		tar -czvf "dist/$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" bin; \
 	done
 
