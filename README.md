@@ -31,17 +31,11 @@ If creating a provider for distribution to other users, they will need `pulumi-r
 # Build and install the provider
 make install_provider
 
-# Regenerate SDKs
-make generate
-
 # Ensure the pulumi-provider-xyz script is on PATH
 $ export PATH=$PATH:$PWD/bin
 
-# Test Node.js SDK
-$ make install_nodejs_sdk
-$ cd examples/simple
-$ yarn install
-$ yarn link @pulumi/xyz
+# Test YAML program
+$ cd examples/yaml
 $ pulumi stack init test
 $ pulumi config set aws:region us-east-1
 $ pulumi up
@@ -104,34 +98,7 @@ The component resource's type token is `xyz:index:StaticPage` in the format of `
 
 This component has a required `indexContent` input property typed as `string`, and two required output properties: `bucket` and `websiteUrl`. Note that `bucket` is typed as the `aws:s3/bucket:Bucket` resource from the `aws` provider (in the schema the `/` is escaped as `%2F`).
 
-Since this component returns a type from the `aws` provider, each SDK must reference the associated Pulumi `aws` SDK for the language. For the .NET, Node.js, and Python SDKs, dependencies are specified in the `language` section of the schema:
-
-```json
-"language": {
-    "csharp": {
-        "packageReferences": {
-            "Pulumi": "2.*",
-            "Pulumi.Aws": "3.*"
-        }
-    },
-    "nodejs": {
-        "dependencies": {
-            "@pulumi/aws": "^3.30.0"
-        },
-        "devDependencies": {
-            "typescript": "^3.7.0"
-        }
-    },
-    "python": {
-        "requires": {
-            "pulumi": ">=2.21.2,<3.0.0",
-            "pulumi-aws": ">=3.30.0,<4.0.0"
-        }
-    }
-}
-```
-
-For the Go SDK, dependencies are specified in the `sdk/go.mod` file.
+Since this component returns a type from the `aws` provider, each SDK must reference the associated Pulumi `aws` SDK for the language.
 
 ### Implementation
 

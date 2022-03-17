@@ -1,0 +1,130 @@
+I0317 09:47:04.443682    6314 backend.go:409] found username for access token
+I0317 09:47:05.581722    6314 backend.go:409] found username for access token
+Updating (dev)
+
+I0317 09:47:06.064734    6314 backend.go:409] found username for access token
+I0317 09:47:06.064635    6314 backend.go:930] Stack dev being updated to version 571
+View Live: https://app.pulumi.com/mikhailshilkov/simple/dev/updates/571
+
+I0317 09:47:06.473571    6314 update.go:192] *** Starting Update(preview=false) ***
+I0317 09:47:06.474590    6314 plugins.go:76] gatherPluginsFromProgram(): gathering plugins from language host
+I0317 09:47:06.475922    6314 plugins.go:1049] GetPluginPath(language, yaml, <nil>): found on $PATH /Users/mikhailshilkov/go/bin/pulumi-language-yaml
+I0317 09:47:06.475980    6314 plugin.go:126] Launching plugin 'yaml' from '/Users/mikhailshilkov/go/bin/pulumi-language-yaml' with args: -root=/Users/mikhailshilkov/go/src/github.com/pulumi/pulumi-component-provider-ts-boilerplate/examples/yaml,127.0.0.1:62830
+I0317 09:47:06.825800    6314 langruntime_plugin.go:207] langhost[yaml].GetPluginInfo() executing
+I0317 09:47:06.826129    6314 langruntime_plugin.go:115] langhost[yaml].GetRequiredPlugins(proj=simple,pwd=/Users/mikhailshilkov/go/src/github.com/pulumi/pulumi-component-provider-ts-boilerplate/examples/yaml,program=.) executing
+I0317 09:47:06.827384    6314 langruntime_plugin.go:157] langhost[yaml].GetRequiredPlugins(proj=simple,pwd=/Users/mikhailshilkov/go/src/github.com/pulumi/pulumi-component-provider-ts-boilerplate/examples/yaml,program=.) success: #versions=1
+I0317 09:47:06.827407    6314 plugins.go:88] gatherPluginsFromProgram(): plugin yaml <nil> () is required by language host
+I0317 09:47:06.827428    6314 plugins.go:88] gatherPluginsFromProgram(): plugin xyz <nil> () is required by language host
+I0317 09:47:06.827440    6314 plugins.go:100] gatherPluginsFromSnapshot(): gathering plugins from snapshot
+I0317 09:47:06.827449    6314 plugins.go:137] ensurePluginsAreInstalled(): beginning
+I0317 09:47:06.827509    6314 plugins.go:1049] GetPluginPath(language, yaml, <nil>): found on $PATH /Users/mikhailshilkov/go/bin/pulumi-language-yaml
+I0317 09:47:06.827523    6314 plugins.go:142] ensurePluginsAreInstalled(): plugin yaml <nil> already installed
+I0317 09:47:06.827563    6314 plugins.go:1049] GetPluginPath(resource, xyz, <nil>): found on $PATH /Users/mikhailshilkov/go/bin/pulumi-resource-xyz
+I0317 09:47:06.827575    6314 plugins.go:142] ensurePluginsAreInstalled(): plugin xyz <nil> already installed
+I0317 09:47:06.827586    6314 plugins.go:157] ensurePluginsAreInstalled(): completed
+I0317 09:47:06.827601    6314 plugins.go:246] computeDefaultProviderPlugins(): considering xyz
+I0317 09:47:06.827617    6314 plugins.go:277] computeDefaultProviderPlugins(): plugin xyz selected for package xyz (first seen)
+I0317 09:47:06.827626    6314 plugins.go:246] computeDefaultProviderPlugins(): considering yaml
+I0317 09:47:06.827634    6314 plugins.go:249] computeDefaultProviderPlugins(): skipping yaml, not a resource provider
+I0317 09:47:06.827641    6314 plugins.go:283] computeDefaultProviderPlugins(): summary of default plugins:
+I0317 09:47:06.827649    6314 plugins.go:285]   xyz             = <nil>
+
+I0317 09:47:06.828584    6314 step_generator.go:1098] stepGenerator.GeneratePendingDeletes(): scanning previous snapshot for pending deletes
+I0317 09:47:06.828607    6314 deployment_executor.go:440] deploymentExecutor.retirePendingDeletes(...): no pending deletions
+I0317 09:47:06.828614    6314 langruntime_plugin.go:168] langhost[yaml].Run(pwd=/Users/mikhailshilkov/go/src/github.com/pulumi/pulumi-component-provider-ts-boilerplate/examples/yaml,program=.,#args=0,proj=simple,stack=dev,#config=0,dryrun=false) executing
+I0317 09:47:06.828963    6314 deployment_executor.go:221] deploymentExecutor.Execute(...): waiting for incoming events
+I0317 09:47:06.828980    6314 step_executor.go:364] StepExecutor worker(-2): worker coming online
+I0317 09:47:06.828998    6314 step_executor.go:364] StepExecutor worker(-2): worker waiting for incoming chains
+I0317 09:47:06.831553    6314 source_eval.go:629] ResourceMonitor.SupportsFeature(id: resourceReferences) = true
+I0317 09:47:06.831787    6314 source_eval.go:629] ResourceMonitor.SupportsFeature(id: outputValues) = true
+I0317 09:47:06.832010    6314 eventsink.go:78] eventSink::Infoerr(<{%reset%}>I0317 09:47:06.831979    6317 context.go:822] RegisterResource(pulumi:pulumi:Stack, simple-dev): Goroutine spawned, RPC call being made
+<{%reset%}>)
+    pulumi:pulumi:Stack simple-dev  I0317 09:47:06.831979    6317 context.go:822] RegisterResource(pulumi:pulumi:Stack, simple-dev): Goroutine spawned, RPC call being made
+I0317 09:47:06.832414    6314 eventsink.go:78] eventSink::Infoerr(<{%reset%}>I0317 09:47:06.832373    6317 plugins.go:1048] GetPluginPath(resource, xyz, <nil>): found on $PATH /Users/mikhailshilkov/go/bin/pulumi-resource-xyz
+<{%reset%}>)
+I0317 09:47:06.832447    6314 eventsink.go:78] eventSink::Infoerr(<{%reset%}>I0317 09:47:06.832417    6317 plugin.go:126] Launching plugin 'xyz (resource)' from '/Users/mikhailshilkov/go/bin/pulumi-resource-xyz' with args: 127.0.0.1:62836
+<{%reset%}>)
+    pulumi:pulumi:Stack simple-dev  I0317 09:47:06.832373    6317 plugins.go:1048] GetPluginPath(resource, xyz, <nil>): found on $PATH /Users/mikhailshilkov/go/bin/pulumi-resource-xyz
+    pulumi:pulumi:Stack simple-dev  I0317 09:47:06.832417    6317 plugin.go:126] Launching plugin 'xyz (resource)' from '/Users/mikhailshilkov/go/bin/pulumi-resource-xyz' with args: 127.0.0.1:62836
+I0317 09:47:06.833324    6314 source_eval.go:1072] ResourceMonitor.RegisterResource received: t=pulumi:pulumi:Stack, name=simple-dev, custom=false, #props=0, parent=, protect=false, provider=, deps=[], deleteBeforeReplace=<nil>, ignoreChanges=[], aliases=[], customTimeouts={0 0 0}, providers=map[], replaceOnChanges=[], retainOnDelete=false
+I0317 09:47:06.833378    6314 source_eval.go:167] EvalSourceIterator produced a registration: t=pulumi:pulumi:Stack,name=simple-dev,#props=0
+I0317 09:47:06.833395    6314 deployment_executor.go:225] deploymentExecutor.Execute(...): incoming event (nil? false, <nil>)
+I0317 09:47:06.833403    6314 deployment_executor.go:412] deploymentExecutor.handleSingleEvent(...): received RegisterResourceEvent
+I0317 09:47:06.833440    6314 step_generator.go:655] Planner decided to create 'urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev' (inputs=map[])
+I0317 09:47:06.833574    6314 step_executor.go:364] StepExecutor worker(-2): worker received chain for execution
+I0317 09:47:06.833613    6314 step_executor.go:364] StepExecutor worker(-2): worker waiting for incoming chains
+I0317 09:47:06.833644    6314 step_executor.go:364] StepExecutor worker(0): launching oneshot worker
+I0317 09:47:06.833688    6314 snapshot.go:130] SnapshotManager: Beginning mutation for step `create` on resource `urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev`
+I0317 09:47:06.833714    6314 snapshot.go:304] SnapshotManager.doCreate(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev)
+I0317 09:47:06.833736    6314 snapshot.go:540] SnapshotManager.markPendingOperation(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev, creating)
+ +  pulumi:pulumi:Stack simple-dev creating I0317 09:47:06.832417    6317 plugin.go:126] Launching plugin 'xyz (resource)' from '/Users/mikhailshilkov/go/bin/pulumi-resource-xyz' with args: 127.0.0.1:62836
+I0317 09:47:06.846465    6314 eventsink.go:78] eventSink::Infoerr(<{%reset%}>I0317 09:47:06.846420    6317 provider_plugin.go:1438] Provider[xyz, 0xc0004c01e0].GetPluginInfo() executing
+<{%reset%}>)
+ +  pulumi:pulumi:Stack simple-dev creating I0317 09:47:06.846420    6317 provider_plugin.go:1438] Provider[xyz, 0xc0004c01e0].GetPluginInfo() executing
+I0317 09:47:07.098008    6314 step_executor.go:364] StepExecutor worker(0): applying step create on urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev (preview false)
+I0317 09:47:07.098082    6314 snapshot.go:322] SnapshotManager: createSnapshotMutation.End(..., true)
+I0317 09:47:07.098112    6314 snapshot.go:547] SnapshotManager.markOperationComplete(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev)
+I0317 09:47:07.098137    6314 snapshot.go:533] Appended new state snapshot to be written: urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev
+I0317 09:47:07.340032    6314 step_executor.go:364] StepExecutor worker(0): step create on urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev retired
+I0317 09:47:07.340079    6314 source_eval.go:1152] stripping unknowns from RegisterResource response for urn urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev
+I0317 09:47:07.340094    6314 source_eval.go:1162] ResourceMonitor.RegisterResource operation finished: t=pulumi:pulumi:Stack, urn=urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev, #outs=0
+I0317 09:47:07.340543    6314 eventsink.go:78] eventSink::Infoerr(<{%reset%}>I0317 09:47:07.340500    6317 context.go:851] RegisterResource(pulumi:pulumi:Stack, simple-dev): success: urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev  ...
+<{%reset%}>)
+I0317 09:47:07.340617    6314 eventsink.go:78] eventSink::Infoerr(<{%reset%}>I0317 09:47:07.340590    6317 context.go:1498] RegisterResourceOutputs(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev): RPC call being made
+<{%reset%}>)
+ +  pulumi:pulumi:Stack simple-dev creating I0317 09:47:07.340500    6317 context.go:851] RegisterResource(pulumi:pulumi:Stack, simple-dev): success: urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev  ...
+ +  pulumi:pulumi:Stack simple-dev creating I0317 09:47:07.340590    6317 context.go:1498] RegisterResourceOutputs(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev): RPC call being made
+I0317 09:47:07.340904    6314 source_eval.go:1207] ResourceMonitor.RegisterResourceOutputs received: urn=urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev, #outs=0
+I0317 09:47:07.340940    6314 source_eval.go:172] EvalSourceIterator produced a completion: urn=urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev,#outs=0
+I0317 09:47:07.340970    6314 deployment_executor.go:225] deploymentExecutor.Execute(...): incoming event (nil? false, <nil>)
+I0317 09:47:07.340983    6314 deployment_executor.go:418] deploymentExecutor.handleSingleEvent(...): received register resource outputs
+I0317 09:47:07.341005    6314 step_executor.go:364] StepExecutor worker(-1): registered resource outputs urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev: old=#0, new=#0
+I0317 09:47:07.568768    6314 source_eval.go:1231] ResourceMonitor.RegisterResourceOutputs operation finished: urn=urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev, #outs=0
+I0317 09:47:07.569236    6314 eventsink.go:78] eventSink::Infoerr(<{%reset%}>I0317 09:47:07.569047    6317 context.go:1504] RegisterResourceOutputs(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev): <nil>
+<{%reset%}>)
+ +  pulumi:pulumi:Stack simple-dev creating I0317 09:47:07.569047    6317 context.go:1504] RegisterResourceOutputs(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev): <nil>
+I0317 09:47:07.569550    6314 langruntime_plugin.go:200] langhost[yaml].RunPlan(pwd=/Users/mikhailshilkov/go/src/github.com/pulumi/pulumi-component-provider-ts-boilerplate/examples/yaml,program=.,...,dryrun=false) success: progerr=1 error occurred:
+	* readObjectStart: expect { or n, but found  , error found in #0 byte of ...||..., bigger context ...||...
+
+I0317 09:47:07.570821    6314 source_eval.go:187] EvalSourceIterator ended with an error: an unhandled error occurred: 1 error occurred:
+	* readObjectStart: expect { or n, but found  , error found in #0 byte of ...||..., bigger context ...||...
+
+I0317 09:47:07.570850    6314 deployment_executor.go:225] deploymentExecutor.Execute(...): incoming event (nil? true, Error: an unhandled error occurred: 1 error occurred:
+	* readObjectStart: expect { or n, but found  , error found in #0 byte of ...||..., bigger context ...||...
+
+)
+I0317 09:47:07.570885    6314 eventsink.go:86] eventSink::Error(<{%reset%}>an unhandled error occurred: 1 error occurred:
+	* readObjectStart: expect { or n, but found  , error found in #0 byte of ...||..., bigger context ...||...
+
+<{%reset%}>)
+I0317 09:47:07.570902    6314 step_executor.go:364] StepExecutor worker(-1): StepExecutor.waitForCompletion(): waiting for worker threads to exit
+I0317 09:47:07.570915    6314 step_executor.go:364] StepExecutor worker(-2): worker exiting due to cancellation
+ +  pulumi:pulumi:Stack simple-dev creating error: an unhandled error occurred: 1 error occurred:
+I0317 09:47:07.570949    6314 step_executor.go:364] StepExecutor worker(-1): StepExecutor.waitForCompletion(): worker threads all exited
+I0317 09:47:07.570974    6314 deployment_executor.go:269] deploymentExecutor.Execute(...): step executor has completed
+I0317 09:47:07.570991    6314 deployment_executor.go:132] deploymentExecutor.Execute(...): exiting provider canceller
+I0317 09:47:07.571801    6314 ignore.go:44] Explicitly ignoring and discarding error: rpc error: code = Canceled desc = grpc: the client connection is closing
+I0317 09:47:07.571826    6314 host.go:417] Error closing 'yaml' language plugin during shutdown; ignoring: 1 error occurred:
+	* operation not permitted
+
+I0317 09:47:07.571861    6314 update.go:195] *** Update(preview=false) complete ***
+ +  pulumi:pulumi:Stack simple-dev **creating failed** 1 error; 7 messages
+ 
+Diagnostics:
+  pulumi:pulumi:Stack (simple-dev):
+    error: an unhandled error occurred: 1 error occurred:
+    	* readObjectStart: expect { or n, but found  , error found in #0 byte of ...||..., bigger context ...||...
+ 
+    I0317 09:47:06.831979    6317 context.go:822] RegisterResource(pulumi:pulumi:Stack, simple-dev): Goroutine spawned, RPC call being made
+    I0317 09:47:06.832373    6317 plugins.go:1048] GetPluginPath(resource, xyz, <nil>): found on $PATH /Users/mikhailshilkov/go/bin/pulumi-resource-xyz
+    I0317 09:47:06.832417    6317 plugin.go:126] Launching plugin 'xyz (resource)' from '/Users/mikhailshilkov/go/bin/pulumi-resource-xyz' with args: 127.0.0.1:62836
+    I0317 09:47:06.846420    6317 provider_plugin.go:1438] Provider[xyz, 0xc0004c01e0].GetPluginInfo() executing
+    I0317 09:47:07.340500    6317 context.go:851] RegisterResource(pulumi:pulumi:Stack, simple-dev): success: urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev  ...
+    I0317 09:47:07.340590    6317 context.go:1498] RegisterResourceOutputs(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev): RPC call being made
+    I0317 09:47:07.569047    6317 context.go:1504] RegisterResourceOutputs(urn:pulumi:dev::simple::pulumi:pulumi:Stack::simple-dev): <nil>
+ 
+Resources:
+    + 1 created
+
+Duration: 1s
+

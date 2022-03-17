@@ -1,0 +1,11 @@
+name: simple
+runtime: yaml
+description: A simple xyz example
+resources:
+  page:
+    type: "xyz:StaticPage"
+    properties:
+      indexContent: "<html><body><p>Hello world!</p></body></html>"
+# outputs:
+#   bucket: ${page.bucket}
+#   url: ${page.websiteUrl}

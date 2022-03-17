@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@vercel/ncc": "^0.28.6",
-    "nexe": "^4.0.0-beta.18"
+    "nexe": "^4.0.0-beta.18",
+    "typescript": "~3.7.3"
   }
 }
