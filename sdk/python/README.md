@@ -19,7 +19,7 @@ If creating a provider for distribution to other users, they will need `pulumi-r
 - Pulumi CLI
 - Node.js
 - Yarn
-- Go 1.15 (to regenerate the SDKs)
+- Go 1.17 (to regenerate the SDKs)
 - Python 3.6+ (to build the Python SDK)
 - .NET Core SDK (to build the .NET SDK)
 
