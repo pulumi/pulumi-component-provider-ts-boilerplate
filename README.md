@@ -1,6 +1,13 @@
-# xyz Pulumi Component Provider (TypeScript)
+# Pulumi Component Provider Boilerplate (TypeScript)
 
 This repo is a boilerplate showing how to create a Pulumi component provider written in TypeScript. You can search-replace `xyz` with the name of your desired provider as a starting point for creating a component provider for your component resources.
+
+## Background
+This repository is part of the [guide for authoring and publishing a Pulumi Package](https://www.pulumi.com/docs/guides/pulumi-packages/how-to-author).
+
+Learn about the concepts behind [Pulumi Packages](https://www.pulumi.com/docs/guides/pulumi-packages/#pulumi-packages) and, more specifically, [Pulumi Components](https://www.pulumi.com/docs/intro/concepts/resources/components/)
+
+## Sample xyz Component Provider
 
 An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-xyz/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in TypeScript.
 
@@ -60,6 +67,11 @@ The provider plugin can be packaged into a tarball and hosted at a custom server
 Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-xyz` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically in the `dist` directory using `make dist`.
 
 TODO explain custom server hosting in more detail.
+
+## Configuring CI and releases
+
+1. Follow the instructions laid out in the [deployment templates](./deployment-templates/README-DEPLOYMENT.md).
+
 
 ## Example component
 
