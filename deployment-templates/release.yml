@@ -32,31 +32,37 @@ env:
   PUBLISH_PYPI: true
 jobs:
   publish-binary:
-    name: publish
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repo
-      uses: actions/checkout@v2
-    - name: Unshallow clone for tags
-      run: git fetch --prune --unshallow --tags
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{matrix.goversion}}
-    - name: Install pulumictl
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
-      with:
-        repo: pulumi/pulumictl
-    - name: Run GoReleaser
-      uses: goreleaser/goreleaser-action@v2
-      with:
-        args: -p 1 release --rm-dist --timeout 90m0s
-        version: latest
+        uses: actions/checkout@v2
+      - name: Unshallow clone for tags
+        run: git fetch --prune --unshallow --tags
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.nodeversion}}
+      - name: Install pulumictl
+        uses: jaxxstorm/action-install-gh-release@v1.5.0
+        with:
+          repo: pulumi/pulumictl
+      - name: Install Pulumi CLI
+        uses: pulumi/action-install-pulumi-cli@v1.0.1
+      - run: make build_provider
+      - name: Create Provider Binaries
+        run: make dist
+      - name: Create GH Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
     strategy:
       fail-fast: true
       matrix:
-        goversion:
-        - 1.17.x
+        nodeversion:
+          - 14.x
   publish_sdk:
     name: Publish SDKs
     runs-on: ubuntu-latest
@@ -100,13 +106,6 @@ jobs:
               git diff
               exit 1
           fi
-      - name: Compress SDK folder
-        run: tar -zcf sdk/${{ matrix.language }}.tar.gz -C sdk/${{ matrix.language }} .
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.language  }}-sdk.tar.gz
-          path: ${{ github.workspace}}/sdk/${{ matrix.language }}.tar.gz
       - if: ${{ matrix.language == 'python' && env.PUBLISH_PYPI == 'true' }}
         name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
