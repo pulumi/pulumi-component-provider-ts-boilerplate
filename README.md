@@ -17,11 +17,11 @@ A code generator is available which generates SDKs in TypeScript, Python, Go and
 
 An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
 
-Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a platform-specific binary that includes its Node.js dependency along with the provider code, created using [nexe](https://github.com/nexe/nexe). By default, running `make install` will create the binary specific to your host environment, but you can override the binary target by passing in `make install target=<targe-string>` where `target-string` is a [valid nexe target](https://github.com/nexe/nexe#target-string--object).
+Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a platform-specific binary that includes its Node.js dependency along with the provider code, created using [nexe](https://github.com/nexe/nexe). By default, running `make install` will create the binary specific to your host environment, but you can override the binary target by passing in `make install target=<target-string>` where `target-string` is a [valid nexe target](https://github.com/nexe/nexe#target-string--object).
 
 After running `make install`, `pulumi-resource-xyz` will be available in the `./bin` directory. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
 
-If creating a provider for distribution to other users, they will need `pulumi-resource-xyz` directory on their `PATH`. See the Packaging section below for more on distributing the provider to users.
+If creating a provider for distribution to other users, they will need the `pulumi-resource-xyz` directory on their `PATH`. See the Packaging section below for more on distributing the provider to users.
 
 ## Prerequisites
 
