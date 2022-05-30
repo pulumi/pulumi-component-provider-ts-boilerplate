@@ -10,8 +10,6 @@ VERSION_PATH    := provider/pkg/version.Version
 WORKING_DIR     := $(shell pwd)
 SCHEMA_PATH     := ${WORKING_DIR}/schema.json
 
-override target := "14.15.3"
-
 generate:: gen_go_sdk gen_dotnet_sdk gen_nodejs_sdk gen_python_sdk
 
 build:: build_provider build_dotnet_sdk build_nodejs_sdk build_python_sdk
@@ -23,34 +21,34 @@ ensure::
 	yarn install
 
 # Provider
-
 build_provider:: ensure
 	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
-	pushd provider/cmd/${PROVIDER}/ && \
-		yarn install && \
-	popd && \
-	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
-	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
-	rm ./build/index.js.bak && \
-	rm -rf ./bin && mkdir bin && \
-	npx nexe build/index.js -r build/schema.json -t $(target) -o bin/${PROVIDER}
+	cd provider/cmd/${PROVIDER}/ && \
+       		yarn install && \
+       		yarn tsc && \
+       		cp package.json schema.json ./bin && \
+       		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" bin/package.json
 
+install_provider:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 install_provider:: build_provider
+	cd provider/cmd/${PROVIDER}/ && \
+		yarn run pkg . ${PKG_ARGS} --target node16 --output ../../../bin/${PROVIDER}
 
 # builds all providers required for publishing
-dist:: ensure
-	pushd provider/cmd/${PROVIDER}/ && \
-		yarn install && \
-	popd && \
-	rm -rf build && npx --package @vercel/ncc ncc build provider/cmd/${PROVIDER}/index.ts -o build && \
-	sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./build/index.js && \
-	rm ./build/index.js.bak && \
-	rm -rf dist  && mkdir dist && \
-	for TARGET in "darwin-amd64" "win-amd64" "linux-amd64"; do \
-		rm -rf ./bin && mkdir bin && \
-		npx nexe build/index.js -r build/schema.json -t "$${TARGET}-14.15.3" -o bin/${PROVIDER} && \
-		tar -czvf "dist/$(PROVIDER)-v$(VERSION)-$${TARGET}.tar.gz" bin; \
-	done
+dist:: PKG_ARGS := --no-bytecode --public-packages "*" --public
+dist:: build_provider
+	cd provider/cmd/${PROVIDER}/ && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-macos-x64 --output ../../../bin/darwin-amd64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-macos-arm64 --output ../../../bin/darwin-arm64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-linux-x64 --output ../../../bin/linux-amd64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-linux-arm64 --output ../../../bin/linux-arm64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-win-x64 --output ../../../bin/windows-amd64/${PROVIDER}.exe
+	mkdir -p dist
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-amd64.tar.gz README.md LICENSE -C bin/linux-amd64/ .
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-arm64.tar.gz README.md LICENSE -C bin/linux-arm64/ .
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-darwin-amd64.tar.gz README.md LICENSE -C bin/darwin-amd64/ .
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-darwin-arm64.tar.gz README.md LICENSE -C bin/darwin-arm64/ .
+	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-windows-amd64.tar.gz README.md LICENSE -C bin/windows-amd64/ .
 
 # Go SDK
 

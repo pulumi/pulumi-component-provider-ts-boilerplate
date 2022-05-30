@@ -12,6 +12,8 @@ package-lock.json
 **/dist
 nuget/
 **/build
+dist/
+.DS_Store
 
 ci-scripts/
 *.tar.gz

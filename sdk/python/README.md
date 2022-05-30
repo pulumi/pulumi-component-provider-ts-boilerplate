@@ -1,6 +1,13 @@
-# xyz Pulumi Component Provider (TypeScript)
+# Pulumi Component Provider Boilerplate (TypeScript)
 
 This repo is a boilerplate showing how to create a Pulumi component provider written in TypeScript. You can search-replace `xyz` with the name of your desired provider as a starting point for creating a component provider for your component resources.
+
+## Background
+This repository is part of the [guide for authoring and publishing a Pulumi Package](https://www.pulumi.com/docs/guides/pulumi-packages/how-to-author).
+
+Learn about the concepts behind [Pulumi Packages](https://www.pulumi.com/docs/guides/pulumi-packages/#pulumi-packages) and, more specifically, [Pulumi Components](https://www.pulumi.com/docs/intro/concepts/resources/components/)
+
+## Sample xyz Component Provider
 
 An example `StaticPage` [component resource](https://www.pulumi.com/docs/intro/concepts/resources/#components) is available in `provider/cmd/pulumi-resource-xyz/staticPage.ts`. This component creates a static web page hosted in an AWS S3 Bucket. There is nothing special about `StaticPage` -- it is a typical component resource written in TypeScript.
 
@@ -10,9 +17,11 @@ A code generator is available which generates SDKs in TypeScript, Python, Go and
 
 An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
 
-Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a simple bash script which invokes `node` to run the provider (there is also a `pulumi-resource-xyz.cmd` script that Pulumi will use on Windows). After running `make install`, `pulumi-resource-xyz` (and `pulumi-resource-xyz.cmd`) will be available in the `./bin` directory along with the JavaScript files and dependencies needed by the provider. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
+Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a platform-specific binary that includes its Node.js dependency along with the provider code, created using [pkg](https://github.com/vercel/pkg). By default, running `make install` will create the binary specific to your host environment.
 
-If creating a provider for distribution to other users, they will need `pulumi-resource-xyz` directory on their `PATH`. See the Packaging section below for more on distributing the provider to users.
+After running `make install`, `pulumi-resource-xyz` will be available in the `./bin` directory. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
+
+If creating a provider for distribution to other users, they will need the `pulumi-resource-xyz` directory on their `PATH`. See the Packaging section below for more on distributing the provider to users.
 
 ## Prerequisites
 
@@ -55,9 +64,14 @@ While the provider plugin must follow this naming convention, the SDK package na
 
 The provider plugin can be packaged into a tarball and hosted at a custom server URL to make it easier to distribute to users.
 
-Currently three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same set of files: the content of the `./bin` directory after running `make install_provider`, excluding the `node_modules` directory. The `node_modules` directory isn't necessary to be included in the tarballs because the `PulumiPlugin.yaml` file indicates to Pulumi that this is a `nodejs` plugin that needs its `npm` dependencies installed as part of installing the plugin.
+Currently, five tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-linux-arm64.tar.gz` `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-arm64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same files: the platform-specific binary `pulumi-resource-xyz`, README and LICENSE. The fill set of binaries can be automatically generated using the command `make dist`.
 
-TODO add make target to generate tarballs and explain custom server hosting in more detail.
+TODO explain custom server hosting in more detail.
+
+## Configuring CI and releases
+
+1. Follow the instructions laid out in the [deployment templates](./deployment-templates/README-DEPLOYMENT.md).
+
 
 ## Example component
 
@@ -69,32 +83,32 @@ The example `StaticPage` component resource is defined in `schema.json`:
 
 ```json
 "resources": {
-    "xyz:index:StaticPage": {
-        "isComponent": true,
-        "inputProperties": {
-            "indexContent": {
-                "type": "string",
-                "description": "The HTML content for index.html."
-            }
-        },
-        "requiredInputs": [
-            "indexContent"
-        ],
-        "properties": {
-            "bucket": {
-                "$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
-                "description": "The bucket resource."
-            },
-            "websiteUrl": {
-                "type": "string",
-                "description": "The website URL."
-            }
-        },
-        "required": [
-            "bucket",
-            "websiteUrl"
-        ]
-    }
+"xyz:index:StaticPage": {
+"isComponent": true,
+"inputProperties": {
+"indexContent": {
+"type": "string",
+"description": "The HTML content for index.html."
+}
+},
+"requiredInputs": [
+"indexContent"
+],
+"properties": {
+"bucket": {
+"$ref": "/aws/v3.30.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
+"description": "The bucket resource."
+},
+"websiteUrl": {
+"type": "string",
+"description": "The website URL."
+}
+},
+"required": [
+"bucket",
+"websiteUrl"
+]
+}
 }
 ```
 
@@ -106,26 +120,26 @@ Since this component returns a type from the `aws` provider, each SDK must refer
 
 ```json
 "language": {
-    "csharp": {
-        "packageReferences": {
-            "Pulumi": "2.*",
-            "Pulumi.Aws": "3.*"
-        }
-    },
-    "nodejs": {
-        "dependencies": {
-            "@pulumi/aws": "^3.30.0"
-        },
-        "devDependencies": {
-            "typescript": "^3.7.0"
-        }
-    },
-    "python": {
-        "requires": {
-            "pulumi": ">=2.21.2,<3.0.0",
-            "pulumi-aws": ">=3.30.0,<4.0.0"
-        }
-    }
+"csharp": {
+"packageReferences": {
+"Pulumi": "2.*",
+"Pulumi.Aws": "3.*"
+}
+},
+"nodejs": {
+"dependencies": {
+"@pulumi/aws": "^3.30.0"
+},
+"devDependencies": {
+"typescript": "^3.7.0"
+}
+},
+"python": {
+"requires": {
+"pulumi": ">=2.21.2,<3.0.0",
+"pulumi-aws": ">=3.30.0,<4.0.0"
+}
+}
 }
 ```
 
@@ -147,7 +161,7 @@ export class StaticPage extends pulumi.ComponentResource {
     constructor(name: string, args: StaticPageArgs, opts?: pulumi.ComponentResourceOptions) {
         super("xyz:index:StaticPage", name, args, opts);
 
-        ...
+    ...
     }
 }
 ```
@@ -157,7 +171,7 @@ The provider makes this component resource available in the `construct` method i
 
 ```typescript
 async function constructStaticPage(name: string, inputs: pulumi.Inputs,
-    options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
+                                   options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
 
     // Create the component resource.
     const staticPage = new StaticPage(name, inputs as StaticPageArgs, options);

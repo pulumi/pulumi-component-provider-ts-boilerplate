@@ -43,6 +43,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{matrix.nodeversion}}
+      - uses: MOZGIII/install-ldid-action@v1
+        with:
+          tag: v2.1.5-procursus2
       - name: Install pulumictl
         uses: jaxxstorm/action-install-gh-release@v1.5.0
         with:

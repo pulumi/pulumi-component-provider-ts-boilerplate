@@ -17,7 +17,7 @@ A code generator is available which generates SDKs in TypeScript, Python, Go and
 
 An example of using the `StaticPage` component in TypeScript is in `examples/simple`.
 
-Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a platform-specific binary that includes its Node.js dependency along with the provider code, created using [nexe](https://github.com/nexe/nexe). By default, running `make install` will create the binary specific to your host environment, but you can override the binary target by passing in `make install target=<target-string>` where `target-string` is a [valid nexe target](https://github.com/nexe/nexe#target-string--object).
+Note that the provider plugin (`pulumi-resource-xyz`) must be on your `PATH` to be used by Pulumi deployments. In this case, `pulumi-resource-xyz` is a platform-specific binary that includes its Node.js dependency along with the provider code, created using [pkg](https://github.com/vercel/pkg). By default, running `make install` will create the binary specific to your host environment.
 
 After running `make install`, `pulumi-resource-xyz` will be available in the `./bin` directory. You can add this to your path in bash with `export PATH=$PATH:$PWD/bin`.
 
@@ -64,7 +64,7 @@ While the provider plugin must follow this naming convention, the SDK package na
 
 The provider plugin can be packaged into a tarball and hosted at a custom server URL to make it easier to distribute to users.
 
-Currently, three tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same file: the platform-specific binary `pulumi-resource-xyz` created in the `./bin` directory after running `make install_provider`. These artifacts can be generated automatically in the `dist` directory using `make dist`.
+Currently, five tarball files are necessary for Linux, macOS, and Windows (`pulumi-resource-xyz-v0.0.1-linux-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-linux-arm64.tar.gz` `pulumi-resource-xyz-v0.0.1-darwin-amd64.tar.gz`, `pulumi-resource-xyz-v0.0.1-darwin-arm64.tar.gz`, `pulumi-resource-xyz-v0.0.1-windows-amd64.tar.gz`) each containing the same files: the platform-specific binary `pulumi-resource-xyz`, README and LICENSE. The fill set of binaries can be automatically generated using the command `make dist`.
 
 TODO explain custom server hosting in more detail.
 
