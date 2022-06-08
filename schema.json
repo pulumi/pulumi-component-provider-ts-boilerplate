@@ -33,11 +33,13 @@
             "packageReferences": {
                 "Pulumi": "3.*",
                 "Pulumi.Aws": "5.*"
-            }
+            },
+            "respectSchemaVersion": true
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-xyz/sdk/go/xyz"
+            "importBasePath": "github.com/pulumi/pulumi-xyz/sdk/go/xyz",
+            "respectSchemaVersion": true
         },
         "nodejs": {
             "dependencies": {
@@ -45,13 +47,15 @@
             },
             "devDependencies": {
                 "typescript": "^3.7.0"
-            }
+            },
+            "respectSchemaVersion": true
         },
         "python": {
             "requires": {
                 "pulumi": ">=3.0.0,<4.0.0",
                 "pulumi-aws": ">=5.0.0,<6.0.0"
-            }
+            },
+            "respectSchemaVersion": true
         }
     }
 }
