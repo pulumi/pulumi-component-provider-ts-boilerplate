@@ -2,8 +2,8 @@
     "version": "${VERSION}",
     "bin": "bin/index.js",
     "dependencies": {
-        "@pulumi/pulumi": "^3.34.1",
-        "@pulumi/aws": "^4.0.0"
+        "@pulumi/pulumi": "^3.38.0",
+        "@pulumi/aws": "^5.0.0"
     },
     "devDependencies": {
         "@types/node": "^10.0.0",
