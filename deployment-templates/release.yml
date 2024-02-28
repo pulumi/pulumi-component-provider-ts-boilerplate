@@ -99,6 +99,8 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: ${{matrix.pythonversion}}
+      - name: Install setuptools
+        run: pip install setuptools
       - name: Build SDK
         run: make build_${{ matrix.language }}_sdk
       - name: Check worktree clean
