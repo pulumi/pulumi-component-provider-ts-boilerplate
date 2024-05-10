@@ -7,7 +7,7 @@
     },
     "devDependencies": {
         "@types/node": "^20.12.11",
-        "pkg": "^5.6.0",
+        "@yao-pkg/pkg": "^5.11.5",
         "typescript": "^5.4.5"
     }
 }
