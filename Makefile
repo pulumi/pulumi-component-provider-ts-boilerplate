@@ -4,7 +4,6 @@ PACK            := xyz
 PROJECT         := github.com/pulumi/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
-CODEGEN         := pulumi-gen-${PACK}
 VERSION_PATH    := provider/pkg/version.Version
 
 WORKING_DIR     := $(shell pwd)
@@ -54,7 +53,7 @@ dist:: build_provider
 
 gen_go_sdk::
 	rm -rf sdk/go
-	cd provider/cmd/${CODEGEN} && go run . go ../../../sdk/go ${SCHEMA_PATH}
+	pulumi package gen-sdk ${SCHEMA_PATH} --language go
 
 ## Empty build target for Go
 build_go_sdk::
@@ -64,7 +63,7 @@ build_go_sdk::
 
 gen_dotnet_sdk::
 	rm -rf sdk/dotnet
-	cd provider/cmd/${CODEGEN} && go run . dotnet ../../../sdk/dotnet ${SCHEMA_PATH}
+	pulumi package gen-sdk ${SCHEMA_PATH} --language dotnet
 
 build_dotnet_sdk:: DOTNET_VERSION := ${VERSION}
 build_dotnet_sdk:: gen_dotnet_sdk
@@ -82,7 +81,7 @@ install_dotnet_sdk:: build_dotnet_sdk
 
 gen_nodejs_sdk::
 	rm -rf sdk/nodejs
-	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
+	pulumi package gen-sdk ${SCHEMA_PATH} --language nodejs
 
 build_nodejs_sdk:: gen_nodejs_sdk
 	cd sdk/nodejs/ && \
@@ -101,7 +100,7 @@ install_nodejs_sdk:: build_nodejs_sdk
 
 gen_python_sdk::
 	rm -rf sdk/python
-	cd provider/cmd/${CODEGEN} && go run . python ../../../sdk/python ${SCHEMA_PATH}
+	pulumi package gen-sdk ${SCHEMA_PATH} --language python
 	cp ${WORKING_DIR}/README.md sdk/python
 
 build_python_sdk:: PYPI_VERSION := ${VERSION}
