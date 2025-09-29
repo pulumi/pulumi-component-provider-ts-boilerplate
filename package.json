@@ -1,6 +1,12 @@
 {
-  "devDependencies": {
-    "@vercel/ncc": "^0.28.6",
-    "nexe": "^4.0.0-beta.18"
-  }
+    "name": "static-page-component",
+    "description": "Static Page Component",
+    "dependencies": {
+        "@pulumi/aws": "^7.6.0",
+        "@pulumi/pulumi": "^3.191.0"
+    },
+    "devDependencies": {
+        "@types/node": "^24.0.0",
+        "typescript": "^5.9.2"
+    }
 }
