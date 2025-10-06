@@ -1,0 +1,10 @@
+name: ts-example-yaml
+runtime: yaml
+packages:
+  node-components: ../
+  aws: "7.6.0"
+resources:
+  my-static-page:
+    type: node-components:StaticPage
+    properties:
+      indexContent: "<h1>I love Pulumi!</h1>"
